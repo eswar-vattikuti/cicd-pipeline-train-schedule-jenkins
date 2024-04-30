@@ -1,35 +1,39 @@
 plugins {
-  //inlude the nodeJS plugin to execute nodejs and npm tasks
-  id "com.moowork.node" version "1.2.0"
+    // Updated the NodeJS plugin to a newer, maintained version
+    id "com.github.node-gradle.node" version "4.0.1"
 }
 
 node {
-	download = true
-	version = "9.11.1"
-	npmVersion = "5.6.0"
+    download = true
+    version = "9.11.1"
+    npmVersion = "5.6.0"
+    workDir = file("${project.buildDir}/nodejs")
+    npmWorkDir = file("${project.buildDir}/npm")
 }
 
-//declare a build task
+// Declare a simple task to build
 task build
 
-//declare a task to create a zip of the app
+// Update the zip task to use new properties
 task zip(type: Zip) {
-	from ('.') {
-		include "*"
-		include "bin/**"
-		include "data/**"
-		include "node_modules/**"
-		include "public/**"
-		include "routes/**"
-		include "views/**"
-	}
-	destinationDir(file("dist"))
-	baseName "trainSchedule"
+    from('.') {
+        include "*"
+        include "bin/**"
+        include "data/**"
+        include "node_modules/**"
+        include "public/**"
+        include "routes/**"
+        include "views/**"
+    }
+    // Use destinationDirectory for Gradle 8.7 compatibility
+    destinationDirectory = file("$buildDir/dist")
+    archiveBaseName.set("trainSchedule")
 }
 
-//declare task dependencies
-build.dependsOn zip
-zip.dependsOn npm_build
-npm_build.dependsOn npm_test
-npm_test.dependsOn npmInstall
-npm_build.dependsOn npmInstall
+// Declare task dependencies using task paths to ensure correct task execution order
+build.dependsOn 'zip'
+zip.dependsOn 'npm_build'
+npm_build.dependsOn 'npm_test'
+npm_test.dependsOn 'npmInstall'
+npm_build.dependsOn 'npmInstall'
+
