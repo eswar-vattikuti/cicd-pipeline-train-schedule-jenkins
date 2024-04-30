@@ -1,6 +1,6 @@
 plugins {
     // Updated the NodeJS plugin to a newer, maintained version
-    id "com.github.node-gradle.node" version "4.0.1"
+    id "com.moowork.node" version "1.2.0"
 }
 
 node {
