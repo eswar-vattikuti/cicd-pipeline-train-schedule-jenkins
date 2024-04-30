@@ -2,6 +2,10 @@ plugins {
   id "com.github.node-gradle.node" version "7.0.2"
 }
 
+task cleanNode(type: Delete) {
+    delete 'build/nodejs'
+}
+
 node {
     download = true
     version = "9.11.1"
@@ -29,7 +33,9 @@ task zip(type: Zip) {
     archiveBaseName.set("trainSchedule")
 }
 
+
 // Declare task dependencies using task paths to ensure correct task execution order
+nodeSetup.dependsOn cleanNode
 build.dependsOn 'zip'
 zip.dependsOn 'npm_build'
 npm_build.dependsOn 'npm_test'
