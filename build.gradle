@@ -2,7 +2,7 @@ plugins {
   id "com.github.node-gradle.node" version "7.0.2"
 }
 
-// Remove nodejs before every build
+// Remove nodejs before every build - test
 task cleanNode(type: Delete) {
     delete 'build/nodejs'
 }
